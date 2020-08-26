@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -89,6 +86,55 @@ public class UserService {
          this.userRepository.deleteById(id);
     }
 
+    public User updateUser(int id, User user){
+        User modifiedUser = userRepository.findById(id);
+
+        if(modifiedUser != null){
+
+            modifiedUser.setRoleList(user.getRoleList());
+            modifiedUser.setFirstName(user.getFirstName());
+            modifiedUser.setLastName(user.getLastName());
+            modifiedUser.setEmail(user.getEmail());
+            modifiedUser.setUsername(user.getUsername());
+            modifiedUser.setPassword(user.getPassword());
+            userRepository.save(modifiedUser);
+        }
+        else {
+            throw new RuntimeException("User not found !");
+        }
+        return modifiedUser;
+    }
+
+    public User updateUser2(int id, List<Role> roleList){
+        User modifiedUser = userRepository.findById(id);
+
+        if(modifiedUser != null){
+
+            modifiedUser.setRoleList(roleList);
+            userRepository.save(modifiedUser);
+        }
+        else {
+            throw new RuntimeException("User not found !");
+        }
+        return modifiedUser;
+    }
+
+    public Role updateRole(int id, String name){
+        Role modifiedRole = roleRepository.findById(id).get();
+
+        if(modifiedRole != null){
+            modifiedRole.setName(name);
+            roleRepository.save(modifiedRole);
+        }
+        else {
+            throw new RuntimeException("Role not found!");
+        }
+        return modifiedRole;
+    }
+
+    public void deleteRolebyId(int id){
+        roleRepository.deleteById(id);
+    }
 
 
 
