@@ -61,9 +61,16 @@ public class UserController {
     @GetMapping("/findRoleBy/{id}")
     public ResponseEntity<Role> findRoleById(@PathVariable int id)
     {
-        Role roleSearched = this.userService.findRoleById(id);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","findRoleById");
+        Role roleSearched = null;
+        try {
+            roleSearched = this.userService.findRoleById(id);
+        }catch (ErrorResponse e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+        }
+
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(roleSearched);
     }
 
@@ -73,6 +80,9 @@ public class UserController {
         List<Role> allRoles =  userService.findAllRoles();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","findAllRoles");
+        if(allRoles.size() == 0 ){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).headers(httpHeaders).body(null);
+        }
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(allRoles);
     }
 
@@ -83,6 +93,9 @@ public class UserController {
         List<User> allUsers = this.userService.findAllUsers();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","findAllUsers");
+        if(allUsers.size() == 0 ){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).headers(httpHeaders).body(null);
+        }
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(allUsers);
     }
 
@@ -95,25 +108,47 @@ public class UserController {
 
     @PostMapping("/updateUser")
     public ResponseEntity<User> updateUser(@RequestParam int id, @RequestBody User user){
-        User updatedUser = userService.updateUser(id,user);
+        User updatedUser = null;
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","updateUser");
+        try{
+            updatedUser = userService.updateUser(id,user);
+
+        }catch (ErrorResponse errorResponse){
+            errorResponse.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+        }
+
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedUser);
     }
 
     @PostMapping("/updateUser2/{roleList}")
     public ResponseEntity<User> updateUser2(@RequestParam int id , @PathVariable List<Role> roleList){
-        User updatedUser = userService.updateUser2(id,roleList);
+        User updatedUser = null ;
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","updateUser");
+        try{
+            updatedUser = userService.updateUser2(id,roleList);
+        }catch (ErrorResponse e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+        }
+
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedUser);
     }
 
     @PostMapping("/updateRole/{name}")
     public ResponseEntity<Role> updateRole(@PathVariable String name, @RequestParam int id){
-        Role updatedRole =  userService.updateRole(id,name);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","updateRole");
+        Role updatedRole =  null;
+        try {
+            updatedRole = userService.updateRole(id,name);
+        }catch (ErrorResponse e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+        }
+
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedRole);
     }
 
@@ -121,4 +156,19 @@ public class UserController {
     public void deleteRolebyId(@PathVariable int id){
         userService.deleteRolebyId(id);
     }
+
+    @GetMapping("getUser/{id}")
+    public ResponseEntity<User> findUserById(@PathVariable int id){
+        User searchedUser = null ;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Response","getuser");
+        try{
+            searchedUser = userService.findUserById(id);
+        }catch (ErrorResponse e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(searchedUser);
+    }
+
 }
