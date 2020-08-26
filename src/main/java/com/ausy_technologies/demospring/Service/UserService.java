@@ -1,5 +1,6 @@
 package com.ausy_technologies.demospring.Service;
 
+import com.ausy_technologies.demospring.Controller.ErrorResponse;
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
 import com.ausy_technologies.demospring.Repository.RoleRepository;
@@ -47,7 +48,7 @@ public class UserService {
        }
        else
        {
-           throw new RuntimeException("Role not found");
+           throw new ErrorResponse("User not found",404);
        }
 
 
@@ -65,7 +66,11 @@ public class UserService {
 
     public Role findRoleById(int id)
     {
-        return this.roleRepository.findById(id).get();
+        Role role = roleRepository.findById(id).get();
+        if(role == null){
+            throw new ErrorResponse("Role not found !",404);
+        }
+        return role;
 
     }
 
@@ -74,6 +79,13 @@ public class UserService {
         return this.roleRepository.findAll();
     }
 
+    public User findUserById(int id){
+        User user = this.userRepository.findById(id);
+        if(user == null){
+            throw new ErrorResponse("User not found !",404);
+        }
+        return user;
+    }
 
     public List<User> findAllUsers()
     {
@@ -81,10 +93,7 @@ public class UserService {
     }
 
 
-    public void deleteUserById(int id)
-    {
-         this.userRepository.deleteById(id);
-    }
+    public void deleteUserById(int id) { this.userRepository.deleteById(id); }
 
     public User updateUser(int id, User user){
         User modifiedUser = userRepository.findById(id);
@@ -100,7 +109,7 @@ public class UserService {
             userRepository.save(modifiedUser);
         }
         else {
-            throw new RuntimeException("User not found !");
+            throw new ErrorResponse("User not found !",404);
         }
         return modifiedUser;
     }
@@ -114,21 +123,21 @@ public class UserService {
             userRepository.save(modifiedUser);
         }
         else {
-            throw new RuntimeException("User not found !");
+            throw new ErrorResponse("User not found !",404);
         }
         return modifiedUser;
     }
 
     public Role updateRole(int id, String name){
-        Role modifiedRole = roleRepository.findById(id).get();
+        Role modifiedRole = null;
 
-        if(modifiedRole != null){
-            modifiedRole.setName(name);
+        try{
+            modifiedRole = roleRepository.findById(id).get();
             roleRepository.save(modifiedRole);
+        }catch (RuntimeException e){
+            throw new ErrorResponse(e,"Role not found !",404);
         }
-        else {
-            throw new RuntimeException("Role not found!");
-        }
+
         return modifiedRole;
     }
 
