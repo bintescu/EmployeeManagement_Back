@@ -13,7 +13,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userServ;
+    private UserService userService;
 
 
 
@@ -21,7 +21,7 @@ public class UserController {
     public Role saveRole(@RequestBody Role role) {
 
 
-        Role roleAdded = this.userServ.saveRole(role);
+        Role roleAdded = this.userService.saveRole(role);
         return roleAdded;
     }
 
@@ -30,46 +30,46 @@ public class UserController {
 
     @PostMapping("/addUser")
     public User saveUser(@RequestBody User user) {
-        User userAdded = this.userServ.saveUser(user);
+        User userAdded = this.userService.saveUser(user);
         return userAdded;
     }
 
     @PostMapping("/addUser2/{idRole}")
     public User saveUser2(@RequestBody User user, @PathVariable int idRole)
     {
-        return this.userServ.saveUser2(user,idRole);
+        return this.userService.saveUser2(user,idRole);
 
     }
 
     @PostMapping("/addUser3/{roleList}")
     public User saveUser3(@RequestBody User user , @PathVariable List<Role> roleList)
     {
-        return this.userServ.saveUser3(user,roleList);
+        return this.userService.saveUser3(user,roleList);
     }
 
     @GetMapping("/findRoleBy/{id}")
     public Role findRoleById(@PathVariable int id)
     {
-  return this.userServ.findRoleById(id);
+  return this.userService.findRoleById(id);
     }
 
     @GetMapping("/findAllRoles")
     public List<Role> findAllRoles()
     {
-        return  userServ.findAllRoles();
+        return  userService.findAllRoles();
     }
 
 
     @GetMapping("/allUsers")
     public List<User> findAllUsers()
     {
-        return this.userServ.findAllUsers();
+        return this.userService.findAllUsers();
     }
 
     @DeleteMapping("/deleteUserById/{id}")
     public void deleteUser(@PathVariable int id)
     {
-        this.userServ.deleteUserById(id);
+        this.userService.deleteUserById(id);
 
     }
 
