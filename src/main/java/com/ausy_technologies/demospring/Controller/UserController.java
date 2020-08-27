@@ -99,7 +99,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(allUsers);
     }
 
-    @DeleteMapping("/deleteUserById/{id}")
+    @DeleteMapping("/deleteUser/{id}")
     public void deleteUser(@PathVariable int id)
     {
         this.userService.deleteUserById(id);

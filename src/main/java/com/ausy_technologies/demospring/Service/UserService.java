@@ -130,9 +130,9 @@ public class UserService {
 
     public Role updateRole(int id, String name){
         Role modifiedRole = null;
-
         try{
             modifiedRole = roleRepository.findById(id).get();
+            modifiedRole.setName(name);
             roleRepository.save(modifiedRole);
         }catch (RuntimeException e){
             throw new ErrorResponse(e,"Role not found !",404);
