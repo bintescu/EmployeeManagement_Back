@@ -73,22 +73,22 @@ public class UserController {
 
     }
 
-    @PostMapping("/updateUser")
+    @PutMapping("/updateUser")
     public User updateUser(@RequestParam int id, @RequestBody User user){
         return userService.updateUser(id,user);
     }
 
-    @PostMapping("/updateUser2/{roleList}")
+    @PutMapping("/updateUser2/{roleList}")
     public User updateUser2(@RequestParam int id , @PathVariable List<Role> roleList){
         return userService.updateUser2(id,roleList);
     }
 
-    @PostMapping("/updateRole/{name}")
+    @PutMapping("/updateRole/{name}")
     public Role updateRole(@PathVariable String name, @RequestParam int id){
         return userService.updateRole(id,name);
     }
 
-    @PostMapping("deleteRole/{id}")
+    @DeleteMapping("deleteRole/{id}")
     public void deleteRolebyId(@PathVariable int id){
         userService.deleteRolebyId(id);
     }
