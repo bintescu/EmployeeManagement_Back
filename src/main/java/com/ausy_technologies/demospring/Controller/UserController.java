@@ -106,7 +106,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/updateUser")
+    @PutMapping("/updateUser")
     public ResponseEntity<User> updateUser(@RequestParam int id, @RequestBody User user){
         User updatedUser = null;
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -122,7 +122,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedUser);
     }
 
-    @PostMapping("/updateUser2/{roleList}")
+    @PutMapping("/updateUser2/{roleList}")
     public ResponseEntity<User> updateUser2(@RequestParam int id , @PathVariable List<Role> roleList){
         User updatedUser = null ;
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -137,7 +137,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedUser);
     }
 
-    @PostMapping("/updateRole/{name}")
+    @PutMapping("/updateRole/{name}")
     public ResponseEntity<Role> updateRole(@PathVariable String name, @RequestParam int id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","updateRole");
@@ -152,7 +152,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedRole);
     }
 
-    @PostMapping("deleteRole/{id}")
+    @DeleteMapping("deleteRole/{id}")
     public void deleteRolebyId(@PathVariable int id){
         userService.deleteRolebyId(id);
     }
