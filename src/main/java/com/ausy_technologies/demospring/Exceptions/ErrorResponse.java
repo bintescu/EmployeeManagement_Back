@@ -1,4 +1,4 @@
-package com.ausy_technologies.demospring.Controller;
+package com.ausy_technologies.demospring.Exceptions;
 
 public class ErrorResponse extends RuntimeException {
 

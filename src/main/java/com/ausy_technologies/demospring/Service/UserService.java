@@ -1,6 +1,6 @@
 package com.ausy_technologies.demospring.Service;
 
-import com.ausy_technologies.demospring.Controller.ErrorResponse;
+import com.ausy_technologies.demospring.Exceptions.ErrorResponse;
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
 import com.ausy_technologies.demospring.Repository.RoleRepository;
@@ -8,7 +8,6 @@ import com.ausy_technologies.demospring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,8 +82,8 @@ public class UserService {
     public User findUserById(int id){
         User user = this.userRepository.findById(id);
         if(user == null){
-            //throw new ErrorResponse("User not found !",404);
-            throw new EntityNotFoundException("User not found !");
+            throw new ErrorResponse("User not found !",404);
+
         }
         return user;
     }
