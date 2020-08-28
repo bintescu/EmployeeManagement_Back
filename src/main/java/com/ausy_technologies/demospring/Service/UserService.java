@@ -66,11 +66,13 @@ public class UserService {
 
     public Role findRoleById(int id)
     {
-        Role role = roleRepository.findById(id).get();
-        if(role == null){
+
+        if (!roleRepository.findById(id).isPresent()) {
             throw new ErrorResponse("Role not found !",404);
         }
-        return role;
+        else {
+            return roleRepository.findById(id).get();
+        }
 
     }
 
