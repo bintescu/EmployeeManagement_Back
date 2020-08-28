@@ -1,5 +1,6 @@
-package com.ausy_technologies.demospring.Controller;
+package com.ausy_technologies.demospring.Exceptions;
 
+import com.ausy_technologies.demospring.Controller.ErrorResponse;
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
 import com.ausy_technologies.demospring.Service.UserService;
@@ -162,12 +163,13 @@ public class UserController {
         User searchedUser = null ;
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Response","getuser");
-        try{
-            searchedUser = userService.findUserById(id);
-        }catch (ErrorResponse e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
-        }
+//        try{
+//            searchedUser = userService.findUserById(id);
+//        }catch (ErrorResponse e){
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+//        }
+        searchedUser = userService.findUserById(id);
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(searchedUser);
     }
 
