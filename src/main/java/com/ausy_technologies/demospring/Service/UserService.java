@@ -3,6 +3,7 @@ package com.ausy_technologies.demospring.Service;
 import com.ausy_technologies.demospring.Exceptions.ErrorResponse;
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
+import com.ausy_technologies.demospring.Model.DTO.UserDto;
 import com.ausy_technologies.demospring.Repository.RoleRepository;
 import com.ausy_technologies.demospring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,5 +150,48 @@ public class UserService {
     }
 
 
+    public UserDto findUserDTObyId(int id){
+        User user = this.userRepository.findById(id);
+        if(user == null){
+            throw new ErrorResponse("User not found !",404);
+
+        }
+        else {
+
+            return UserMapping(user);
+        }
+    }
+
+    public List<UserDto> findAllUsersDTO(){
+        List<User> userList = userRepository.findAll();
+        if(userList != null) {
+
+            List<UserDto> userDtos = new ArrayList<>();
+            for (User user : userList) {
+                userDtos.add(UserMapping(user));
+            }
+            return userDtos;
+        }
+        else {
+            throw new ErrorResponse("User table is empty !",204);
+        }
+    }
+
+    private UserDto UserMapping(User user ){
+        if(user != null) {
+            UserDto userDto = new UserDto();
+            userDto.setUsername(user.getUsername());
+            userDto.setEmail(user.getEmail());
+            List<String> stringRoleList = new ArrayList<>();
+            for (Role role : user.getRoleList()) {
+                stringRoleList.add(role.getName());
+            }
+            userDto.setRoleList(stringRoleList);
+            return userDto;
+        }
+        else {
+            throw new ErrorResponse("User in Mapping is null",204);
+        }
+    }
 
 }

@@ -1,12 +1,14 @@
 package com.ausy_technologies.demospring.Model.DTO;
 
 
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+
 import java.util.List;
 
 public class UserDto {
 
 
-    private int id;
 
     private String username;
 
@@ -14,13 +16,6 @@ public class UserDto {
 
     private List<String> roleList;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -50,10 +45,11 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto{" +
-                "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", roleList=" + roleList +
                 '}';
     }
+
+
 }

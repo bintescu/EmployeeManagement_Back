@@ -3,6 +3,7 @@ package com.ausy_technologies.demospring.Controller;
 import com.ausy_technologies.demospring.Exceptions.ErrorResponse;
 import com.ausy_technologies.demospring.Model.DAO.Role;
 import com.ausy_technologies.demospring.Model.DAO.User;
+import com.ausy_technologies.demospring.Model.DTO.UserDto;
 import com.ausy_technologies.demospring.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
 
 
     @PostMapping("/addRole")
@@ -153,12 +153,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).headers(httpHeaders).body(updatedRole);
     }
 
-    @DeleteMapping("deleteRole/{id}")
+    @DeleteMapping("/deleteRole/{id}")
     public void deleteRolebyId(@PathVariable int id){
         userService.deleteRolebyId(id);
     }
 
-    @GetMapping("getUser/{id}")
+    @GetMapping("/getUser/{id}")
     public ResponseEntity<User> findUserById(@PathVariable int id){
         User searchedUser = null ;
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -170,6 +170,34 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
         }
         return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(searchedUser);
+    }
+
+    @GetMapping("/getUserDTO/{id}")
+    public ResponseEntity<UserDto> findUserDTObyId(@PathVariable int id){
+        UserDto searchedUser = null ;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Response","getuserDTO");
+        try{
+            searchedUser = userService.findUserDTObyId(id);
+        }catch (ErrorResponse e){
+            ErrorResponse.LogError(e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(searchedUser);
+    }
+
+    @GetMapping("/getAllUsersDto")
+    public ResponseEntity<List<UserDto>> findAllUsersDto(){
+        List<UserDto> userDtos;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Response","getuserDTO");
+        try{
+            userDtos = userService.findAllUsersDTO();
+        }catch (ErrorResponse e){
+            ErrorResponse.LogError(e);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).headers(httpHeaders).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).headers(httpHeaders).body(userDtos);
     }
 
 }
